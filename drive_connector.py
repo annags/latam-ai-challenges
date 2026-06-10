@@ -8,12 +8,21 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 def _get_credentials():
     """
-    Priority: credentials.json in cwd → GOOGLE_APPLICATION_CREDENTIALS env var
+    Priority: credentials.json in cwd → st.secrets["gcp_service_account"]
+    (Streamlit Cloud) → GOOGLE_APPLICATION_CREDENTIALS env var
     """
     if os.path.exists("credentials.json"):
         return service_account.Credentials.from_service_account_file(
             "credentials.json", scopes=SCOPES
         )
+
+    try:
+        if "gcp_service_account" in st.secrets:
+            return service_account.Credentials.from_service_account_info(
+                dict(st.secrets["gcp_service_account"]), scopes=SCOPES
+            )
+    except FileNotFoundError:
+        pass
 
     env_path = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
     if env_path and os.path.exists(env_path):
@@ -22,8 +31,9 @@ def _get_credentials():
         )
 
     raise RuntimeError(
-        "credentials.json not found. "
-        "Place the service account JSON at the project root."
+        "No Google service account credentials found. Place a service account "
+        "JSON at credentials.json, configure st.secrets['gcp_service_account'] "
+        "(Streamlit Cloud), or set GOOGLE_APPLICATION_CREDENTIALS."
     )
 
 

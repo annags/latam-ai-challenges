@@ -24,7 +24,12 @@ App opens at **http://localhost:8501**
 
 ## Credentials setup
 
-The app connects to Google Drive via a service account. Two options:
+The app connects to Google Sheets via a service account. `drive_connector.py`
+looks for credentials in this order:
+
+1. `credentials.json` at the project root (local dev)
+2. `st.secrets["gcp_service_account"]` (Streamlit Cloud — see below)
+3. `GOOGLE_APPLICATION_CREDENTIALS` env var pointing to a service account JSON file
 
 ### Option A — `credentials.json` (simplest for local dev)
 
@@ -62,47 +67,38 @@ universe_domain = "googleapis.com"
 
 ---
 
-## Local fallback (no Drive credentials)
-
-If Drive credentials are not configured, the app falls back to a local file:
-
-```
-data/LATAM_AI_Challenges_Repository.xlsx
-```
-
-Place the Excel file there and the app will load it with a warning banner.
-
----
-
 ## Project structure
 
 ```
 app.py                          # Main Streamlit app, tab routing
-drive_connector.py              # Google Drive auth + download + fallback
-data_loader.py                  # Excel parsing, per-sheet loaders, caching
+drive_connector.py              # Google Sheets API v4 auth + read
+data_loader.py                  # Per-sheet loaders, caching (@st.cache_data)
 components/
     __init__.py
-    challenge_card.py           # Card + grid rendering
-    filters.py                  # Sidebar and inline filter widgets
+    colors.py                   # Centralized colors + badge()/to_doi_url() helpers
+    challenge_card.py           # Card grid + detail modal
+    filters.py                  # Inline filter widgets (Repository, By Paper, Articles)
     charts.py                   # Plotly chart functions
+    network_graph.py            # Cytoscape.js network graph (unused in UI, kept on disk)
+content/
+    about.md                    # About tab content
 requirements.txt
 .streamlit/
     secrets.toml                # Local secrets (gitignored)
-data/
-    LATAM_AI_Challenges_Repository.xlsx   # Local fallback (optional)
 ```
 
 ---
 
 ## Data source
 
-Google Drive Excel file — 4 sheets:
+Google Sheets (via Sheets API v4) — 4 sheets:
 
-| Sheet | Rows | Description |
-|---|---|---|
-| Challenges Repository | 21 | Master challenge list |
-| Challenges by Paper | 128 | Challenge–paper cross-references with verbatim excerpts |
-| Articles Reference | 38 | Full article list |
-| Statistics | — | Summary tables |
+| Sheet | Description |
+|---|---|
+| Challenges Repository | Master challenge list |
+| Challenges by Paper | Challenge–paper cross-references with verbatim excerpts |
+| Articles Reference | Full article list |
+| Statistics | Summary tables |
 
-Data is cached for 1 hour (`ttl=3600`). Use the **Refresh data** button in the sidebar to force a reload.
+Data is cached for 1 hour (`ttl=3600`). Use the **Refresh data** button on the
+Repository tab to force a reload.

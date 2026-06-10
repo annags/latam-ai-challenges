@@ -6,3 +6,9 @@ __pycache__/
 *.pyc
 *.pyo
 .DS_Store
+
+# Local dev tooling / scratch files (not part of the deployed app)
+.claude/
+test_connection.py
+test_data.py
+lib/
