@@ -204,7 +204,7 @@ st.caption(
 )
 
 st.markdown(
-    "Contact: <agarcians@uoc.edu> · "
+    "Contact: <agarciasans@uoc.edu> · "
     "[ORCID](https://orcid.org/0009-0005-0652-7772) · "
     "[LinkedIn](https://www.linkedin.com/in/annagarciasans/)"
 )
