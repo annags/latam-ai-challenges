@@ -199,5 +199,9 @@ with tab5:
 st.markdown("---")
 st.caption(
     "Based on: García Sans, A. (2026). *AI governance challenges in Latin America.* "
-    "Doctoral research, UOC."
+    "Doctoral research, UOC. 
+    Contact: <agarcians@uoc.edu> ·
+[ORCID](https://orcid.org/0009-0005-0652-7772) ·
+[LinkedIn](https://www.linkedin.com/in/annagarciasans/)
+"
 )
