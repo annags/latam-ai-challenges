@@ -197,11 +197,14 @@ with tab5:
 
 # ── Footer ───────────────────────────────────────────────────────────────────
 st.markdown("---")
+
 st.caption(
     "Based on: García Sans, A. (2026). *AI governance challenges in Latin America.* "
-    "Doctoral research, UOC. 
-    Contact: <agarcians@uoc.edu> ·
-[ORCID](https://orcid.org/0009-0005-0652-7772) ·
-[LinkedIn](https://www.linkedin.com/in/annagarciasans/)
-"
+    "Doctoral research, Universitat Oberta de Catalunya (UOC)."
+)
+
+st.markdown(
+    "Contact: <agarcians@uoc.edu> · "
+    "[ORCID](https://orcid.org/0009-0005-0652-7772) · "
+    "[LinkedIn](https://www.linkedin.com/in/annagarciasans/)"
 )
